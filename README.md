@@ -82,7 +82,7 @@ Documentação da API
 
 L5-Swagger - Packpage
 
-    http://localhost:8000/api/documentation
+    http://localhost:8081/api/documentation
 
 Adminer - Ferramenta de gerenciamento de banco de dados
 
@@ -94,7 +94,7 @@ Adminer - Ferramenta de gerenciamento de banco de dados
 
 Laravel telescope - Para uma melhor análise, das informações obtidas atraves da aplicação.
 
-    http://localhost:8000/telescope
+    http://localhost:8081/telescope
 ```
 
 <br>
