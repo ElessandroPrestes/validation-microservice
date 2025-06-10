@@ -22,7 +22,7 @@ class ExternalApiService
         $promises = [
             'viacep' => $this->withRetry(fn() => $this->client->getAsync("https://viacep.com.br/ws/{$data['cep']}/json")),
             'nationalize' => $this->withRetry(fn() => $this->client->getAsync("https://api.nationalize.io?name={$firstName}")),
-            'cpf_status' => $this->withRetry(fn() => $this->client->getAsync("http://localhost:8000/api/v1/mock/cpf-status/{$data['cpf']}")),
+            'cpf_status' => $this->withRetry(fn() => $this->client->getAsync("http://nginx/api/v1/mock/cpf-status/{$data['cpf']}")),
         ];
 
         $results = Promise\Utils::unwrap($promises);

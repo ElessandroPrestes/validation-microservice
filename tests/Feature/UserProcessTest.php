@@ -4,9 +4,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
-uses(RefreshDatabase::class);
-uses(Tests\TestCase::class);
-
+uses(TestCase::class, RefreshDatabase::class);
 
 it('retorna erro de validação se os dados forem inválidos', function () {
     $response = $this->postJson('/api/v1/users/process', []);

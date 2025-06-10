@@ -1,0 +1,154 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "User API",
+        "description": "API para gerenciar usuários.",
+        "contact": {
+            "email": "contato@seudominio.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/users/process": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Processa um usuário via serviço externo",
+                "description": "Processa um usuário via serviço externo e armazena os dados.",
+                "operationId": "79a05b6747732598ab1e6b6b7524ab00",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "cpf"
+                                ],
+                                "properties": {
+                                    "cpf": {
+                                        "type": "string",
+                                        "pattern": "^[0-9]{11}$",
+                                        "example": "12345678901"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Usuário processado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "processed"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro ao processar dados externos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "external_api_error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erro ao processar dados externos."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{cpf}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Consulta um usuário por CPF",
+                "description": "Consulta um usuário por CPF.",
+                "operationId": "b0d0ec064bb142a2dee79f65d970f608",
+                "parameters": [
+                    {
+                        "name": "cpf",
+                        "in": "path",
+                        "description": "CPF do usuário a ser consultado",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^[0-9]{11}$",
+                            "example": "12345678901"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuário encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "fetched"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuário não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "not_found"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuário não encontrado."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Users",
+            "description": "Consulta de usuários"
+        }
+    ]
+}

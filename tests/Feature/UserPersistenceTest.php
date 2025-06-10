@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(Tests\TestCase::class, RefreshDatabase::class);
 
 
+
 it('salva dados no banco e no cache', function () {
     $clientMock = Mockery::mock(ClientInterface::class);
 
@@ -31,11 +32,14 @@ it('salva dados no banco e no cache', function () {
             ]
         ]))));
 
-    $clientMock->shouldReceive('getAsync')
-        ->withArgs(fn($url) => str_contains($url, 'localhost') && str_contains($url, '/cpf-status'))
-        ->andReturn(new FulfilledPromise(new GuzzleResponse(200, [], json_encode([
-            'status' => 'valid'
-        ]))));
+    $cpfStatusUrl = 'nginx/api/v1/mock/cpf-status'; 
+        $cpfStatusResponse = new FulfilledPromise(new GuzzleResponse(200, [], json_encode(['status' => 'valid'])));
+
+        $clientMock->shouldReceive('getAsync')
+            ->withArgs(fn($url) => str_contains($url, $cpfStatusUrl)) 
+            ->andReturn($cpfStatusResponse);
+
+
 
     // Registrar o mock no container
     app()->instance(ClientInterface::class, $clientMock);

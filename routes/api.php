@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\MockController;
 use App\Http\Controllers\Api\UserProcessController;
+use App\Http\Controllers\Api\UserQueryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,3 +16,6 @@ Route::post('/v1/users/process', [UserProcessController::class, 'process'])
 
 Route::get('/v1/mock/cpf-status/{cpf}', [MockController::class, 'cpfStatus'])
     ->name('api.v1.mock.cpf-status');
+
+Route::get('/v1/users/{cpf}', [UserQueryController::class, 'show'])
+    ->name('api.v1.users.show');

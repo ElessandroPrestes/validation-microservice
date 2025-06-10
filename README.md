@@ -84,6 +84,7 @@ L5-Swagger - Packpage
 
     http://localhost:8081/api/documentation
 
+    
 Adminer - Ferramenta de gerenciamento de banco de dados
 
     http://localhost:8080
@@ -95,6 +96,10 @@ Adminer - Ferramenta de gerenciamento de banco de dados
 Laravel telescope - Para uma melhor análise, das informações obtidas atraves da aplicação.
 
     http://localhost:8081/telescope
+
+Laravel Horizon - Oferece um painel baseada em código para suas filas Redis com Laravel.
+
+    http://localhost:8081/horizon
 ```
 
 <br>
