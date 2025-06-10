@@ -1,0 +1,72 @@
+name: validation-microservice CI/CD
+
+on:
+  push:
+    branches: [ "main", "developer" ]
+  pull_request:
+    branches: [ "main", "developer" ]
+
+jobs:
+  laravel-tests:
+
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: fleet_db
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: developer
+        ports:
+          - "5432:5432"
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+      with:
+        php-version: '8.3'
+        extensions: mbstring, pdo_mysql, zip, bcmath, sockets
+
+    - name: Cache Composer dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.composer/cache
+        key: composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          composer-
+
+    - name: Copy .env
+      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+    - name: Install Dependencies
+      run: composer install --no-progress --prefer-dist
+
+    - name: Generate key
+      run: php artisan key:generate
+
+    - name: Ajustar permissões
+      run: chmod -R 775 storage bootstrap/cache
+
+    - name: Run Migrations
+      env:
+        DB_CONNECTION: pgsql
+        DB_HOST: localhost
+        DB_PORT: 5432
+        DB_DATABASE: fleet_db
+        DB_USERNAME: root
+        DB_PASSWORD: developer
+      run: php artisan migrate --force
+
+    - name: Execute tests (Unit and Feature tests)
+      env:
+        DB_CONNECTION: pgsql
+        DB_HOST: localhost
+        DB_PORT: 5432
+        DB_DATABASE: fleet_db
+        DB_USERNAME: root
+        DB_PASSWORD: developer
+      run: php artisan test
